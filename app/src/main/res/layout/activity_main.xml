@@ -7,9 +7,28 @@
     tools:context=".view.MainActivity">
 
     <include
+        layout="@layout/location_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        layout="@layout/location_bar" />
+        android:layout_margin="5dp" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="left"
+        app:constraint_referenced_ids="floatingActionButton" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/menuActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foregroundGravity="right"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:srcCompat="@drawable/ic_menu"
+         />
 
 </android.support.constraint.ConstraintLayout>
+

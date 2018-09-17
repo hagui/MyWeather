@@ -1,16 +1,18 @@
 package com.waddress.myweather.dagger.modules
 
-import android.content.Context
+
 import android.content.Context.LOCATION_SERVICE
+import android.content.Context
 import android.content.SharedPreferences
 import android.location.LocationManager
 import android.preference.PreferenceManager
+import dagger.Module
 import dagger.Provides
 import javax.inject.Inject
 import javax.inject.Singleton
 
 
-@Singleton
+@Module
 class AndroidModule @Inject constructor(private val context: Context) {
 
 

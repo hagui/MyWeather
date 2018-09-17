@@ -15,7 +15,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Created by romantolmachev on 22/11/2017.
+ * Created by z.hagui
  */
 @Singleton
 class Utils @Inject constructor(private val context: Context) {
