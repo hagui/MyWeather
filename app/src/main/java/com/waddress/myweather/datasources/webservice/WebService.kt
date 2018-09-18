@@ -12,5 +12,5 @@ interface WebService {
     fun getRestaurants(@Query("_limit") limit: Int = 15): Call<List<Restaurant>>*/
 
     //@GET("reverseGeocode/{coordinates}")
-   // fun getMyWaddress(@Path("coordinates") coordinates : List<Double>): Call<Waddress>
+    //fun getMyWaddress(@Path("coordinates") coordinates : List<Double>): Call<Waddress>
 }
