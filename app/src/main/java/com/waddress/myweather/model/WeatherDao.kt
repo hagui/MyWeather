@@ -10,7 +10,7 @@ interface WeatherDao {
     @Query("SELECT * FROM weather")
     fun queryRestaurants(): LiveData<List<Weather>>
 
-    // select weather selon la ville
+    // select weather using city name
     @Query("SELECT * FROM weather WHERE city LIKE :city")
     fun queryWeatherByCity(city: String): LiveData<List<Weather>>
 
