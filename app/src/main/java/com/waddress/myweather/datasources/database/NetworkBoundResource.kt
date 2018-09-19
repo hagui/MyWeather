@@ -17,17 +17,18 @@ import java.io.IOException
  */
 abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors) {
     private val result = MediatorLiveData<Resource<T>>()
+
     init {
         result.value = Resource.loading(null)
         val dbSource = loadFromDatabase()
-        result.addSource(dbSource) { data ->
+       /* result.addSource(dbSource) { data ->
             result.removeSource(dbSource)
             if (shouldLoadFromNetwork(data)) {
                 fetchFromNetwork(dbSource)
             } else {
                 result.addSource(dbSource) { newData -> result.setValue(Resource.success(newData)) }
             }
-        }
+        }*/
     }
 
     private fun fetchFromNetwork(dbSource: LiveData<T>) {
@@ -40,13 +41,13 @@ abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors) {
                 when (response.isSuccessful) {
                     true -> appExecutors.diskIO().execute {
                         saveNetworkCallResult(response.body())
-                        appExecutors.mainThread().execute {
+                        /*appExecutors.mainThread().execute {
                             val newDbSource = loadFromDatabase()
                             result.addSource(newDbSource) { newData ->
                                 result.removeSource(newDbSource)
                                 result.setValue(Resource.success(newData))
                             }
-                        }
+                        }*/
                     }
                     false -> appExecutors.mainThread().execute {
                         result.addSource(dbSource) { newData -> result.setValue(Resource.error<T>(newData, Error(response.code(), response.message()))) }

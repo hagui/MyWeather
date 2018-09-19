@@ -5,33 +5,31 @@
     <string name="title_activity_settings">Settings</string>
 
     <string name="home">Accueil</string>
-    <string name="navigation">Naviguer</string>
+    <string name="navigation">historique</string>
     <string name="cantact">Contacter nous</string>
     <string name="about">2018 Copyright: www.WinRak.org</string>
 
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
+    <string name="pref_header_general">App configuration</string>
 
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
+    <string name="pref_title_social_recommendations">Enable historique</string>
+    <string name="pref_description_social_recommendations">Autorisation
+        d\'enregistrer l\'historique de recherche
     </string>
 
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
+    <string name="pref_title_display_name">Adresse par defaut</string>
+    <string name="pref_default_display_name">Ville,Paye</string>
 
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string name="pref_title_add_friends_to_messages">Unités de Température</string>
     <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
+        <item>degré Celsius</item>
+        <item>degré Fahrenheit</item>
     </string-array>
     <string-array name="pref_example_list_values">
         <item>1</item>
         <item>0</item>
-        <item>-1</item>
     </string-array>
 
     <!-- Example settings for Data & Sync -->

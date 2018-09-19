@@ -8,5 +8,5 @@ import java.time.OffsetDateTime
 
 @Entity (tableName = "weather")
 data class Weather(@PrimaryKey (autoGenerate = true) val id: Int, val city: String = "",
-                   val temperature: Float, val joined_date: OffsetDateTime? = null,
+                   val temperature: Float, val joined_date: String = "",
                    val image: String = "", val description: String = "") : Serializable

@@ -1,6 +1,7 @@
 package com.waddress.myweather.view
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -23,7 +24,7 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.location_bar.*
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private val LOCATION_REQUEST_CODE = 101
     @Inject
@@ -85,7 +86,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_settings -> return true
+            R.id.action_settings -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
