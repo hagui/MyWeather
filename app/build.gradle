@@ -20,10 +20,10 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField 'String', 'URL', '"https://www.winrak.org/api/services/"'
+            buildConfigField 'String', 'URL', '"http://api.wunderground.com/api/"'
         }
         release {
-            buildConfigField 'String', 'URL', '"https://www.winrak.org/api/services/"'
+            buildConfigField 'String', 'URL', '"http://api.wunderground.com/api/"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

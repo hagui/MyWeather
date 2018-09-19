@@ -15,5 +15,5 @@ interface WeatherDao {
     fun queryWeatherByCity(city: String): LiveData<List<Weather>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertRestaurant(weather: Weather)
+    fun insertCondition(weather: Weather)
 }

@@ -12,7 +12,7 @@ class Resource<out T> constructor(val status: Status, val data: T?, val error: E
 
         fun <T> success(data: T?): Resource<T> = Resource(Status.SUCCESS, data, null)
 
-        fun <T> error(data: T?, error: Error?): Resource<T> = Resource(Status.ERROR, data, error)
+        fun <T> error(data: T?, error: Error): Resource<T> = Resource(Status.ERROR, data, error)
 
         fun <T> loading(data: T?): Resource<T> = Resource(Status.LOADING, data, null)
     }

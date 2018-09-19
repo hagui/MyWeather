@@ -1,6 +1,7 @@
 package com.waddress.myweather.model
 
 import com.squareup.moshi.Json
+import java.io.Serializable
 
 data class DisplayLocation(@Json(name = "zip")
                            val zip: String = "",
@@ -25,4 +26,4 @@ data class DisplayLocation(@Json(name = "zip")
                            @Json(name = "full")
                            val full: String = "",
                            @Json(name = "longitude")
-                           val longitude: String = "")
+                           val longitude: String = ""): Serializable

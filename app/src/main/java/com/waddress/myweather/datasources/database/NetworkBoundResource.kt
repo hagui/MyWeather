@@ -4,7 +4,10 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.support.annotation.MainThread
 import android.support.annotation.WorkerThread
+import com.waddress.myweather.BuildConfig
 import com.waddress.myweather.datasources.webservice.Resource
+import com.waddress.myweather.datasources.webservice.Error
+import com.waddress.myweather.model.Weather
 import com.waddress.myweather.utils.AppExecutors
 import retrofit2.Call
 import java.io.IOException
@@ -13,12 +16,10 @@ import java.io.IOException
  * Created by z.hagui
  */
 abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors) {
-
     private val result = MediatorLiveData<Resource<T>>()
-
     init {
         result.value = Resource.loading(null)
-       /* val dbSource = loadFromDatabase()
+        val dbSource = loadFromDatabase()
         result.addSource(dbSource) { data ->
             result.removeSource(dbSource)
             if (shouldLoadFromNetwork(data)) {
@@ -26,23 +27,19 @@ abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors) {
             } else {
                 result.addSource(dbSource) { newData -> result.setValue(Resource.success(newData)) }
             }
-        }*/
+        }
     }
 
-    private fun fetchFromNetwork( coordinates : List<Double> ,dbSource: LiveData<T>) {
+    private fun fetchFromNetwork(dbSource: LiveData<T>) {
 
         appExecutors.networkIO().execute {
 
             try {
                 val response = createNetworkCall().execute()
-
                 println("response is: $response")
-
                 when (response.isSuccessful) {
-                    //TODO
-                    /*true -> appExecutors.diskIO().execute {
+                    true -> appExecutors.diskIO().execute {
                         saveNetworkCallResult(response.body())
-
                         appExecutors.mainThread().execute {
                             val newDbSource = loadFromDatabase()
                             result.addSource(newDbSource) { newData ->
@@ -50,17 +47,16 @@ abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors) {
                                 result.setValue(Resource.success(newData))
                             }
                         }
-                    }*/
-
-                    false -> appExecutors.mainThread().execute {
-                       /* result.addSource(dbSource) { newData -> result.setValue(
-                                Resource.error(newData, Error(response.code(), response.message()))) }*/
                     }
-
+                    false -> appExecutors.mainThread().execute {
+                        result.addSource(dbSource) { newData -> result.setValue(Resource.error<T>(newData, Error(response.code(), response.message()))) }
+                    }
                 }
             } catch (exc: IOException) {
-
-              //  System.err.println("Make sure your server ${BuildConfig.URL} is running.")
+                System.err.println("Make sure your server ${BuildConfig.URL} is running.")
+                appExecutors.mainThread().execute {
+                    result.addSource(dbSource) { newData -> result.setValue(Resource.error(newData, Error(503, "Service Unavailable."))) }
+                }
             }
         }
     }
@@ -68,13 +64,13 @@ abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors) {
     fun asLiveData(): LiveData<Resource<T>> = result
 
     @WorkerThread
-    protected abstract fun saveNetworkCallResult()
+    protected abstract fun saveNetworkCallResult(data: T?)
 
     @MainThread
-    protected abstract fun shouldLoadFromNetwork(): Boolean
+    protected abstract fun shouldLoadFromNetwork(data: T?): Boolean
 
     @MainThread
-    protected abstract fun loadFromDatabase(): LiveData<T>
+    protected abstract fun loadFromDatabase(): LiveData<Weather>
 
     @WorkerThread
     protected abstract fun createNetworkCall(): Call<T>

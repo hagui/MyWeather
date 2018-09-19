@@ -83,7 +83,7 @@ class AndroidModule @Inject constructor(private val context: Context) {
                     }
                 }
                 .addOnFailureListener { e ->
-                    Log.d("MapDemoActivity", "Error trying to get last GPS location")
+                    Log.d("AndroidModule", "Error trying to get last GPS location")
                     e.printStackTrace()
                     result = e.message.toString()
                 }
@@ -94,7 +94,7 @@ class AndroidModule @Inject constructor(private val context: Context) {
                         task.result
 
                     } else {
-                        Log.w("3arka", "getLastLocation:exception", task.exception)
+                        Log.w("exception", "getLastLocation:exception", task.exception)
 
                     }
                 }
