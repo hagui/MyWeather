@@ -4,9 +4,11 @@ import android.support.v7.app.AppCompatActivity
 import com.waddress.myweather.dagger.WeatherApplication
 
 /**
- * Created z.hagui
+ * Created by z.HAGUI.
  */
 abstract class AbstractActivity : AppCompatActivity() {
+
+    // pour la gestion de LeakCanary
 
     override fun onDestroy() {
         super.onDestroy()

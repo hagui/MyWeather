@@ -11,7 +11,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 
 /**
- * Created by Z.HAG
+ * Created by z.HAGUI.
  */
 @Module
 abstract class ViewModelModule {

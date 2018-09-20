@@ -8,7 +8,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Created by romantolmachev on 22/11/2017.
+ * Created by z.hagui.
  */
 @Singleton
 open class AppExecutors(private val mDiskIO: Executor, private val mNetworkIO: Executor, private val mMainThread: Executor) {

@@ -6,6 +6,10 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 
+/**
+ * Created by z.HAGUI.
+ */
+
 @Dao
 interface WeatherDao {
 

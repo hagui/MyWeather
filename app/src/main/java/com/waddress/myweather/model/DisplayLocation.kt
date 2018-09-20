@@ -3,6 +3,10 @@ package com.waddress.myweather.model
 import com.squareup.moshi.Json
 import java.io.Serializable
 
+
+/**
+ * Created by z.HAGUI.
+ */
 data class DisplayLocation(@Json(name = "zip")
                            val zip: String = "",
                            @Json(name = "magic")

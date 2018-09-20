@@ -21,6 +21,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 
+/**
+ * Created by z.HAGUI.
+ */
+
 @Module
 class AndroidModule @Inject constructor(private val context: Context) {
 

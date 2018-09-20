@@ -8,8 +8,9 @@ import dagger.android.AndroidInjectionModule
 import javax.inject.Singleton
 
 /**
- * Created by
+ * Created by z.HAGUI.
  */
+
 @Singleton
 @Component(modules = arrayOf(AndroidInjectionModule::class, BuildersModule::class, ViewModelModule::class, AppModule::class, NetModule::class, AndroidModule::class))
 interface AppComponent {

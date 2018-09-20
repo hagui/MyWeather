@@ -4,6 +4,10 @@ import android.arch.lifecycle.Observer
 import android.util.Log
 import com.waddress.myweather.datasources.webservice.Resource
 
+/**
+ * Created by z.HAGUI.
+ */
+
 class ResourceObserver<T>(private val tag: String,
                           private val hideLoading: () -> Unit,
                           private val showLoading: () -> Unit,

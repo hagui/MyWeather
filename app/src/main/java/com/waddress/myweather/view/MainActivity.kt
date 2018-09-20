@@ -1,7 +1,6 @@
 package com.waddress.myweather.view
 
 import android.Manifest
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -33,6 +32,10 @@ import kotlinx.android.synthetic.main.activity_main_nav.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.location_bar.*
 import javax.inject.Inject
+
+/**
+ * Created by z.HAGUI.
+ */
 
 class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -99,7 +102,7 @@ class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelected
                     weatherViewModel.weather.observe(this, ResourceObserver("RestaurantsMapActivity",
                             hideLoading = ::hideLoading,
                             showLoading = ::showLoading,
-                            onSuccess = ::showMarkers,
+                            onSuccess = ::showWeather,
                             onError = ::showErrorMessage))
                     try {
                         // Request location updates
@@ -120,7 +123,7 @@ class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelected
     }
 
 
-    private fun showMarkers(conditions: Conditions) {
+    private fun showWeather(conditions: Conditions) {
         Toast.makeText(this, "success", Toast.LENGTH_LONG).show()
     }
 

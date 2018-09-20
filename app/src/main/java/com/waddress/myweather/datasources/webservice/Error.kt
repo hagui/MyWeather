@@ -1,6 +1,6 @@
 package com.waddress.myweather.datasources.webservice
 
 /**
- * Created by romantolmachev on 22/11/2017.
+ * Created by z.HAGUI.
  */
 data class Error(val code: Int, val message: String)

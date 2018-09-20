@@ -2,6 +2,10 @@ package com.waddress.myweather.model
 
 import com.squareup.moshi.Json
 
+/**
+ * Created by z.HAGUI.
+ */
+
 data class ObservationLocation(@Json(name = "elevation")
                                val elevation: String = "",
                                @Json(name = "country")

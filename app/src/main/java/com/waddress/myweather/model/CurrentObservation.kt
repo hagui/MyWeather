@@ -2,6 +2,10 @@ package com.waddress.myweather.model
 
 import com.squareup.moshi.Json
 
+/**
+ * Created by z.HAGUI.
+ */
+
 data class CurrentObservation(@Json(name = "nowcast")
                               val nowcast: String = "",
                               @Json(name = "temp_c")

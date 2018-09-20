@@ -6,6 +6,10 @@ import android.support.annotation.RequiresApi
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * Created by z.HAGUI.
+ */
+
 object TimeTypeConverter {
     @RequiresApi(Build.VERSION_CODES.O)
     private val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME

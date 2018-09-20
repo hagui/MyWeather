@@ -2,6 +2,7 @@ package com.waddress.myweather.datasources.webservice
 
 import com.waddress.myweather.model.Conditions
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.http.GET
 import retrofit2.http.Path
 
@@ -15,10 +16,12 @@ interface WebService {
     //TODO we will use the api key as static and then when we have time we will use it as parmeter
     //TODO use dynamic url in order to use the autocomplet API (when we have time)
 
-    @GET("{apikey}/conditions/q/{codeCountry}/{city}")
+   /* @GET("{apikey}/conditions/q/{codeCountry}/{city}")
     fun getWeatherByName(@Path("apiKey") apiKey : String ,
                       @Path("codeCountry") code: String,
-                             @Path("city") city:String): Call<Conditions>
+                             @Path("city") city:String): Call<Conditions>*/
 
-
+    @GET("b896f62d3c17257f/conditions/q/{codeCountry}/{city}")
+    fun getWeatherByName(@Path("codeCountry") code: String,
+                         @Path("city") city:String): Call<Conditions>
 }

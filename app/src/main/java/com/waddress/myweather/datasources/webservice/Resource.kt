@@ -1,7 +1,7 @@
 package com.waddress.myweather.datasources.webservice
 
 /**
- * Created by romantolmachev on 22/11/2017.
+ * Created by z.HAGUI.
  */
 class Resource<out T> constructor(val status: Status, val data: T?, val error: Error?) {
     enum class Status {

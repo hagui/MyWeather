@@ -29,9 +29,10 @@ abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors) {
                 result.addSource(dbSource) { newData -> result.setValue(Resource.success(newData)) }
             }
         }*/
+        fetchFromNetwork()
     }
 
-    private fun fetchFromNetwork(dbSource: LiveData<T>) {
+    private fun fetchFromNetwork() {
 
         appExecutors.networkIO().execute {
 
@@ -50,13 +51,13 @@ abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors) {
                         }*/
                     }
                     false -> appExecutors.mainThread().execute {
-                        result.addSource(dbSource) { newData -> result.setValue(Resource.error<T>(newData, Error(response.code(), response.message()))) }
+                       // result.addSource(dbSource) { newData -> result.setValue(Resource.error<T>(newData, Error(response.code(), response.message()))) }
                     }
                 }
             } catch (exc: IOException) {
                 System.err.println("Make sure your server ${BuildConfig.URL} is running.")
                 appExecutors.mainThread().execute {
-                    result.addSource(dbSource) { newData -> result.setValue(Resource.error(newData, Error(503, "Service Unavailable."))) }
+                   // result.addSource(dbSource) { newData -> result.setValue(Resource.error(newData, Error(503, "Service Unavailable."))) }
                 }
             }
         }
@@ -71,7 +72,7 @@ abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors) {
     protected abstract fun shouldLoadFromNetwork(data: T?): Boolean
 
     @MainThread
-    protected abstract fun loadFromDatabase(): LiveData<List<Weather>>
+    protected abstract fun loadFromDatabase(): LiveData<List<Weather>>?
 
     @WorkerThread
     protected abstract fun createNetworkCall(): Call<T>

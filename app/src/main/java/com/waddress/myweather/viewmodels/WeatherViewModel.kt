@@ -10,6 +10,9 @@ import com.waddress.myweather.model.Conditions
 import com.waddress.myweather.model.WeatherRepository
 import javax.inject.Inject
 
+/**
+ * Created by z.HAGUI.
+ */
 
 class WeatherViewModel @Inject constructor(private val repository: WeatherRepository) : ViewModel() {
 

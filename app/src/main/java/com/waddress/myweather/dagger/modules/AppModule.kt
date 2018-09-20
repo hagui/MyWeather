@@ -12,7 +12,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 /**
- * Created z.HAGUI.
+ * Created by z.HAGUI.
  */
 @Module
 class AppModule(private val app: Application) {
