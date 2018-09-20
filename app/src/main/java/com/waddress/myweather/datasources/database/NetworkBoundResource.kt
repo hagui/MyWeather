@@ -71,7 +71,7 @@ abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors) {
     protected abstract fun shouldLoadFromNetwork(data: T?): Boolean
 
     @MainThread
-    protected abstract fun loadFromDatabase(): LiveData<Weather>
+    protected abstract fun loadFromDatabase(): LiveData<List<Weather>>
 
     @WorkerThread
     protected abstract fun createNetworkCall(): Call<T>

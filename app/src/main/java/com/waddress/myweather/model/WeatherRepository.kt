@@ -54,10 +54,9 @@ open class WeatherRepository @Inject constructor(val webService: WebService, val
             /**
              * search saved value if we arenot connected
              */
-            override fun loadFromDatabase(): LiveData<Weather> {
+            override fun loadFromDatabase(): LiveData<List<Weather>> {
                 Log.d(TAG , "recherche dans l'historique")
-                TODO("not implemented")
-
+              return  weatherDao.queryweather()
             }
             /**
              * search temperature using City parameter

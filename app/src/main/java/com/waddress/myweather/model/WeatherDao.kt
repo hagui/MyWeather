@@ -10,7 +10,7 @@ import android.arch.persistence.room.Query
 interface WeatherDao {
 
     @Query("SELECT * FROM weather")
-    fun queryRestaurants(): LiveData<List<Weather>>
+    fun queryweather(): LiveData<List<Weather>>
 
     // select weather using city name
     @Query("SELECT * FROM weather WHERE city LIKE :city")
