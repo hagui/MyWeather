@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.LOCATION_SERVICE
 import android.content.SharedPreferences
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.preference.PreferenceManager
@@ -15,6 +16,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationServices.getFusedLocationProviderClient
 import dagger.Module
 import dagger.Provides
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -50,6 +52,13 @@ class AndroidModule @Inject constructor(private val context: Context) {
         }
     }
 
+    @Provides
+    @Singleton
+    fun getLocationProvider():FusedLocationProviderClient{
+      return LocationServices.getFusedLocationProviderClient(context)
+    }
+
+
     @SuppressLint("MissingPermission")
     @Provides
     @Singleton
@@ -66,6 +75,21 @@ class AndroidModule @Inject constructor(private val context: Context) {
                 }
         return result
     }
+
+
+    @SuppressLint("MissingPermission")
+    @Provides
+    @Singleton
+    fun getGeocoder(): Geocoder {
+        val geocoder: Geocoder = Geocoder(context, Locale.getDefault())
+        return geocoder
+    }
+
+
+
+
+
+
 
     @SuppressLint("MissingPermission")
     @Provides
@@ -98,6 +122,7 @@ class AndroidModule @Inject constructor(private val context: Context) {
 
                     }
                 }
+
         return result
     }
 

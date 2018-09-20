@@ -15,9 +15,9 @@ class WeatherViewModel @Inject constructor(private val repository: WeatherReposi
 
     var initialized = false
 
-    var WeatherInput: MutableLiveData<City> = MutableLiveData()
+    var weatherInput: MutableLiveData<City> = MutableLiveData()
 
-    val weather: LiveData<Resource<Conditions>> = Transformations.switchMap(WeatherInput) {
+    val weather: LiveData<Resource<Conditions>> = Transformations.switchMap(weatherInput) {
 
         initialized = true; repository.getWeather(it.countryIso,it.city)
     }

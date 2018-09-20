@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.waddress.myweather.dagger.ViewModelKey
 import com.waddress.myweather.viewmodels.ViewModelFactory
+import com.waddress.myweather.viewmodels.WeatherViewModel
 
 import dagger.Binds
 import dagger.Module
@@ -16,10 +17,10 @@ import dagger.multibindings.IntoMap
 abstract class ViewModelModule {
 
 
-   /* @Binds
+    @Binds
     @IntoMap
-    @ViewModelKey(WinrakViewModel::class)
-    internal abstract fun bindRestaurantsViewModel(restaurantsViewModel: WinrakViewModel): ViewModel*/
+    @ViewModelKey(WeatherViewModel::class)
+    internal abstract fun bindRestaurantsViewModel(restaurantsViewModel: WeatherViewModel): ViewModel
 
     @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

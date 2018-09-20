@@ -1,22 +1,32 @@
 package com.waddress.myweather.view
 
 import android.Manifest
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
-import com.google.android.gms.maps.SupportMapFragment
 import com.waddress.myweather.R
 import com.waddress.myweather.dagger.modules.AndroidModule
+import com.waddress.myweather.model.City
+import com.waddress.myweather.model.Conditions
+import com.waddress.myweather.utils.ResourceObserver
 import com.waddress.myweather.utils.Utils
+import com.waddress.myweather.viewmodels.ViewModelFactory
+import com.waddress.myweather.viewmodels.WeatherViewModel
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main_nav.*
@@ -25,6 +35,11 @@ import kotlinx.android.synthetic.main.location_bar.*
 import javax.inject.Inject
 
 class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private var mLocation: Location? = null
+    private lateinit var weatherViewModel: WeatherViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     private val LOCATION_REQUEST_CODE = 101
     @Inject
@@ -45,8 +60,14 @@ class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelected
         nav_view.setNavigationItemSelectedListener(this)
         this.floatMenuAction()
         this.floatLocationAction()
+        weatherViewModel = ViewModelProviders.of(this, viewModelFactory).get(WeatherViewModel::class.java)
     }
 
+    override fun onResume() {
+        super.onResume()
+        val city = City("France", "Paris.json")
+        weatherViewModel.weatherInput.value = city
+    }
 
     private fun floatMenuAction() {
         menuActionButton.setOnClickListener { view ->
@@ -60,6 +81,7 @@ class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelected
 
 
     //TODO  le button n'est pas défini si API<17
+    //TODO geoloc fait  l'ancienne il faut le modifier
     private fun floatLocationAction() {
 
         (if (floatingActionButton != null) floatingActionButton
@@ -70,10 +92,24 @@ class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelected
                         Manifest.permission.ACCESS_FINE_LOCATION)
                 if (permission != PackageManager.PERMISSION_GRANTED) {
                     requestPermission(
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        LOCATION_REQUEST_CODE)
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            LOCATION_REQUEST_CODE)
                 } else {
-                    androidManager.getLastLocation()
+                    // androidManager.getLastLocation()
+                    weatherViewModel.weather.observe(this, ResourceObserver("RestaurantsMapActivity",
+                            hideLoading = ::hideLoading,
+                            showLoading = ::showLoading,
+                            onSuccess = ::showMarkers,
+                            onError = ::showErrorMessage))
+                    try {
+                        // Request location updates
+                        androidManager.provideLocationManager().requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+                        if (mLocation != null) {
+                            androidManager.getGeocoder().getFromLocation(mLocation!!.latitude, mLocation!!.longitude, 1)
+                        }
+                    } catch (ex: SecurityException) {
+                        Log.d("myTag", "Security Exception, no location available")
+                    }
                 }
             } else {
                 Toast.makeText(this,
@@ -81,6 +117,23 @@ class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelected
                         Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+
+    private fun showMarkers(conditions: Conditions) {
+        Toast.makeText(this, "success", Toast.LENGTH_LONG).show()
+    }
+
+    private fun showErrorMessage(error: String) {
+        Toast.makeText(this, "Error: $error", Toast.LENGTH_LONG).show()
+    }
+
+    private fun showLoading() {
+        progressbar.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        progressbar.visibility = View.GONE
     }
 
 
@@ -159,6 +212,16 @@ class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelected
         ActivityCompat.requestPermissions(this,
                 arrayOf(permissionType), requestCode
         )
+    }
+
+    private val locationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            this@MainActivity.mLocation = location
+        }
+
+        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
     }
 
 
