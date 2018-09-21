@@ -10,7 +10,7 @@ class Resource<out T> constructor(val status: Status, val data: T?, val error: E
 
     companion object {
 
-        fun <T> success(data: T?): Resource<T> = Resource(Status.SUCCESS, data, null)
+        fun <T> success(data: T?): Resource<T>? = Resource(Status.SUCCESS, data, null)
 
         fun <T> error(data: T?, error: Error): Resource<T> = Resource(Status.ERROR, data, error)
 

@@ -16,6 +16,8 @@ class ResourceObserver<T>(private val tag: String,
 
     override fun onChanged(resource: Resource<T>?) {
         when (resource?.status) {
+
+
             Resource.Status.SUCCESS -> {
                 hideLoading()
                 if (resource.data != null) {

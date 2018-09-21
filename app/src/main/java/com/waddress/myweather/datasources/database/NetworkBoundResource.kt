@@ -7,6 +7,7 @@ import android.support.annotation.WorkerThread
 import com.waddress.myweather.BuildConfig
 import com.waddress.myweather.datasources.webservice.Resource
 import com.waddress.myweather.datasources.webservice.Error
+import com.waddress.myweather.model.Conditions
 import com.waddress.myweather.model.Weather
 import com.waddress.myweather.utils.AppExecutors
 import retrofit2.Call
@@ -37,27 +38,34 @@ abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors) {
         appExecutors.networkIO().execute {
 
             try {
-                val response = createNetworkCall().execute()
+
+                val response = createNetworkCall().execute().body()
                 println("response is: $response")
-                when (response.isSuccessful) {
+                //TODO check for success
+                when (response != null) {
+
                     true -> appExecutors.diskIO().execute {
-                        saveNetworkCallResult(response.body())
-                        /*appExecutors.mainThread().execute {
+                        saveNetworkCallResult(response)
+                        appExecutors.mainThread().execute {
                             val newDbSource = loadFromDatabase()
-                            result.addSource(newDbSource) { newData ->
+                          /*  result.addSource(newDbSource!!) { newData ->
                                 result.removeSource(newDbSource)
-                                result.setValue(Resource.success(newData))
-                            }
-                        }*/
+                                result.setValue(Resource.success(response))
+                            }*/
+                            result.setValue(Resource.success(response))
+                        }
                     }
                     false -> appExecutors.mainThread().execute {
-                       // result.addSource(dbSource) { newData -> result.setValue(Resource.error<T>(newData, Error(response.code(), response.message()))) }
+                       // result.addSource(dbSource) { newData ->
+                        result.setValue(Resource.error<T>(response, Error(500, "soucis d'enregistremennt dans la bd")))
                     }
+
                 }
             } catch (exc: IOException) {
                 System.err.println("Make sure your server ${BuildConfig.URL} is running.")
                 appExecutors.mainThread().execute {
-                   // result.addSource(dbSource) { newData -> result.setValue(Resource.error(newData, Error(503, "Service Unavailable."))) }
+                   // result.addSource(dbSource) { newData ->
+                    result.setValue(Resource.error(null, Error(503, "Service Unavailable.")))
                 }
             }
         }
@@ -66,14 +74,14 @@ abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors) {
     fun asLiveData(): LiveData<Resource<T>> = result
 
     @WorkerThread
-    protected abstract fun saveNetworkCallResult(data: T?)
+    abstract fun saveNetworkCallResult(data: T?)
 
     @MainThread
     protected abstract fun shouldLoadFromNetwork(data: T?): Boolean
 
     @MainThread
-    protected abstract fun loadFromDatabase(): LiveData<List<Weather>>?
+    abstract fun loadFromDatabase(): LiveData<List<Weather>>?
 
     @WorkerThread
-    protected abstract fun createNetworkCall(): Call<T>
+    abstract fun createNetworkCall(): Call<T>
 }

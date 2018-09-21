@@ -99,11 +99,13 @@ class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelected
                             LOCATION_REQUEST_CODE)
                 } else {
                     // androidManager.getLastLocation()
-                    weatherViewModel.weather.observe(this, ResourceObserver("RestaurantsMapActivity",
+                    weatherViewModel.weather.observe(this, ResourceObserver("MainActivity",
                             hideLoading = ::hideLoading,
-                            showLoading = ::showLoading,
                             onSuccess = ::showWeather,
+                            showLoading = ::showLoading,
+
                             onError = ::showErrorMessage))
+
                     try {
                         // Request location updates
                         androidManager.provideLocationManager().requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
@@ -124,6 +126,8 @@ class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelected
 
 
     private fun showWeather(conditions: Conditions) {
+        progressbar.visibility = View.GONE
+        locationTextView.text =  conditions.currentObservation.displayLocation.city
         Toast.makeText(this, "success", Toast.LENGTH_LONG).show()
     }
 
