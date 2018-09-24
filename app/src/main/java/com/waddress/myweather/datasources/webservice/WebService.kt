@@ -1,10 +1,11 @@
 package com.waddress.myweather.datasources.webservice
 
 import com.waddress.myweather.model.Conditions
+import com.waddress.myweather.model.autocomplete.Response
 import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Url
 
 /**
  * Created by Z.HAGUi
@@ -24,4 +25,8 @@ interface WebService {
     @GET("b896f62d3c17257f/conditions/q/{codeCountry}/{city}")
     fun getWeatherByName(@Path("codeCountry") code: String,
                          @Path("city") city:String): Call<Conditions>
+
+    //GET http://autocomplete.wunderground.com/aq?query=query
+    @GET
+    fun autoComplete(@Url String: Any): Call<Response>
 }

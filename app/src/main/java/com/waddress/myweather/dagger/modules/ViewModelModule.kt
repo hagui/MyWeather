@@ -3,6 +3,7 @@ package com.waddress.myweather.dagger.modules
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.waddress.myweather.dagger.ViewModelKey
+import com.waddress.myweather.viewmodels.AutoCompleteViewModel
 import com.waddress.myweather.viewmodels.ViewModelFactory
 import com.waddress.myweather.viewmodels.WeatherViewModel
 
@@ -24,4 +25,10 @@ abstract class ViewModelModule {
 
     @Binds
     internal abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AutoCompleteViewModel::class)
+    internal abstract fun bindAutoCompeletViewModel(autoCompleteViewModel: AutoCompleteViewModel): ViewModel
+
 }
