@@ -41,6 +41,7 @@ import android.support.v7.widget.SearchView.SearchAutoComplete
 import android.text.Editable
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import com.waddress.myweather.model.autocomplete.Response
 
 
 /**
@@ -54,6 +55,9 @@ class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelected
         @SuppressLint("StaticFieldLeak")
         lateinit var instance: MainActivity
         var mLocation: Location? = null
+        fun getAutoCompleteUrl(): String {
+            return "http://autocomplete.wunderground.com/aq?query="
+        }
     }
 
     init {
@@ -73,6 +77,8 @@ class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelected
 
     @Inject
     lateinit var androidManager: AndroidModule
+
+    private var myList: MutableList<String> = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -158,6 +164,18 @@ class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelected
     }
 
 
+    private fun showList(response: Response) {
+        progressbar.visibility = View.GONE
+
+        response.result!!.forEach {
+            it!!.name?.let { it1 -> myList.add(it1) }
+        }
+
+
+
+    }
+
+
     private fun showWeather(conditions: Conditions) {
         progressbar.visibility = View.GONE
         locationTextView.text = conditions.currentObservation.displayLocation.city
@@ -204,8 +222,8 @@ class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelected
         mSearchAutoComplete!!.threshold = 0
         mSearchAutoComplete!!.setDropDownBackgroundResource(android.R.color.holo_purple)
 
-        val items = listOf("1", "2", " 3")
-        var adapter: ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_list_item_1, items.toList())
+
+        var adapter: ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_list_item_1, myList.toList())
         mSearchAutoComplete!!.setAdapter(adapter)
 
         mSearchAutoComplete!!.setOnItemClickListener { parent, view, position, id ->
@@ -214,6 +232,30 @@ class MainActivity : AbstractActivity(), NavigationView.OnNavigationItemSelected
             searchView!!.setQuery(itemAtPosition.toString(), true)
 
         }
+
+        searchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                Log.d("onQueryTextChange()", "valeur  $p0")
+                return if (p0!!.length > 2) {
+                    autoCompleteViewModel.urlInput.value = MainActivity.getAutoCompleteUrl() + p0
+                    autoCompleteViewModel.weather.observe(MainActivity.instance, ResourceObserver("AutoComplete",
+                            hideLoading = ::hideLoading,
+                            onSuccess = ::showList,
+                            showLoading = ::showLoading,
+                            onError = ::showErrorMessage))
+
+                    true
+                } else {
+                    false
+                }
+
+            }
+
+        })
 
 
 
