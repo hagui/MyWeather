@@ -10,11 +10,11 @@ import com.waddress.myweather.datasources.webservice.WebService
 import com.waddress.myweather.model.Weather
 import com.waddress.myweather.utils.AppExecutors
 import com.waddress.myweather.utils.Utils
+import okhttp3.HttpUrl
+import okhttp3.Request
 import retrofit2.Call
 import javax.inject.Inject
 import javax.inject.Singleton
-import okhttp3.HttpUrl
-import retrofit2.http.Url
 
 
 /**
@@ -58,17 +58,9 @@ open class AutoCompleteRepository @Inject constructor(val webService: WebService
             override fun createNetworkCall(): Call<Response> {
 
                 print("avant buildr $url")
-                val urlBuilder = HttpUrl.parse(url)!!.newBuilder()
-                val urls = urlBuilder.build().toString()
-                print("apres buildr $urls")
 
-                /*val url = HttpUrl.Builder()
-                        .scheme("https")
-                        .host("www.google.com")
-                        .addPathSegment("search")
-                        .addQueryParameter("q", "polar bears")
-                        .build()*/
-                return webService.autoComplete(urls)
+                val u = HttpUrl.parse(url)
+                return webService.autoComplete(u!!)
             }
 
         }.asLiveData()

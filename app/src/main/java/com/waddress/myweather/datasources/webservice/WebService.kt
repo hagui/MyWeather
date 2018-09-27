@@ -4,8 +4,10 @@ import com.waddress.myweather.model.Conditions
 import com.waddress.myweather.model.autocomplete.Response
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Url
+import okhttp3.HttpUrl
 
 /**
  * Created by Z.HAGUi
@@ -28,5 +30,5 @@ interface WebService {
 
     //GET http://autocomplete.wunderground.com/aq?query=query
     @GET
-    fun autoComplete(@Url String: Any): Call<Response>
+    fun autoComplete(@Url url: HttpUrl): Call<Response>
 }

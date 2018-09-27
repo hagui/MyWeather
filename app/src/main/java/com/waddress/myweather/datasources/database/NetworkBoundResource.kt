@@ -16,12 +16,11 @@ import java.io.IOException
 /**
  * Created by z.hagui
  */
-abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors) {
+abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors,private val write : Boolean){
     private val result = MediatorLiveData<Resource<T>>()
 
     init {
         result.value = Resource.loading(null)
-        val dbSource = loadFromDatabase()
        /* result.addSource(dbSource) { data ->
             result.removeSource(dbSource)
             if (shouldLoadFromNetwork(data)) {
@@ -45,9 +44,11 @@ abstract class NetworkBoundResource<T>(private val appExecutors: AppExecutors) {
                 when (response != null) {
 
                     true -> appExecutors.diskIO().execute {
-                        saveNetworkCallResult(response)
+                        if(write){
+                            saveNetworkCallResult(response)
+                        }
+
                         appExecutors.mainThread().execute {
-                            val newDbSource = loadFromDatabase()
                           /*  result.addSource(newDbSource!!) { newData ->
                                 result.removeSource(newDbSource)
                                 result.setValue(Resource.success(response))
